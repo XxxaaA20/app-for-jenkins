@@ -24,9 +24,11 @@ spec:
         stage('Check-Git-Secrets') {
             steps {
                 container('trufflehog') {
-                    sh 'trufflehog git --json git@github.com:XxxaaA20/app-for-jenkins.git > trufflehog.json'
-                    sh 'ls -la'
-                    sh 'cat trufflehog.json'
+                    sshagent(['github-ssh-key']) {
+                        sh 'trufflehog git --json git@github.com:XxxaaA20/app-for-jenkins.git > trufflehog.json'
+                        sh 'ls -la'
+                        sh 'cat trufflehog.json'
+                    }
                 }
             }
         }
