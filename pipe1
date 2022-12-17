@@ -1,0 +1,39 @@
+// Uses Declarative syntax to run commands inside a container.
+pipeline {
+    agent {
+        kubernetes {
+            cloud 'kubernetes'
+            namespace 'devops-tools'
+            yaml '''
+apiVersion: v1
+kind: Pod
+metadata:
+  namespace: devops-tools
+  labels:
+    job: build-service
+spec:
+  containers:
+  - name: trufflehog
+    image: xxxaaa20/trufflehog:alex
+    command: ["cat"]
+    tty: true
+'''
+        }
+    }
+    stages {
+        stage('Check-Git-Secrets') {
+            steps {
+                container('trufflehog') {
+                    sh 'trufflehog git --json https://github.com/trufflesecurity/trufflehog.git > trufflehog.json'
+                    sh 'ls -la'
+                    sh 'cat trufflehog.json'
+                }
+            }
+        }
+        stage('Build') {
+            steps {
+                echo 'Building project'
+            }
+        }
+    }
+}
