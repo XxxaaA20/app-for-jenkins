@@ -14,7 +14,7 @@ metadata:
 spec:
   containers:
   - name: trufflehog
-    image: xxxaaa20/trufflehog:alex
+    image: xxxaaa20/trufflehog:alexssh
     command: ["cat"]
     tty: true
 '''
