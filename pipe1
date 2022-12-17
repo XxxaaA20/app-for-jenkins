@@ -23,8 +23,8 @@ spec:
     stages {
         stage('Check-Git-Secrets') {
             steps {
-                sshagent(['github-ssh-key']) {
-                    container('trufflehog') {
+                container('trufflehog') {
+                    sshagent(['github-ssh-key']) {
                         sh 'git clone git@github.com:XxxaaA20/app-for-jenkins.git'
                         sh 'trufflehog git --json git@github.com:XxxaaA20/app-for-jenkins.git > trufflehog.json'
                         sh 'ls -la'
